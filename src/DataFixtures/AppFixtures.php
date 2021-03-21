@@ -46,6 +46,9 @@ class AppFixtures extends Fixture
             $blogPost->setContent($value['content'].$x);
             $blogPost->setAuthor($author);
             $blogPost->setSlug($value['slug'].$x);
+
+            $this->addReference('blog'.$x, $blogPost);
+
             $manager->persist($blogPost);
             $x++;
         }
@@ -54,11 +57,12 @@ class AppFixtures extends Fixture
     }
 
     public function loadComments(ObjectManager $manager) {
-         for ($i = 0; $i < 50; $i++) {
+         for ($i = 0; $i < 100; $i++) {
              $comment = new Comment();
              $comment->setContent($this->facker->realText());
              $comment->setPublished($this->facker->dateTime());
-             $comment->setAuthor($this->getReference('user'.rand(2,4)));
+             $comment->setAuthor($this->getReference('user'.rand(1,4)));
+             $comment->setBlogPost($this->getReference('blog'.rand(1,4)));
              $manager->persist($comment);
          }
          $manager->flush();
