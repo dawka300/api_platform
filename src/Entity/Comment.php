@@ -3,15 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\BlogPostRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=BlogPostRepository::class)
- * @ORM\Table(name="blog_posts")
  * @ApiResource()
+ * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\Table(name="comments")
  */
-class BlogPost
+class Comment
 {
     /**
      * @ORM\Id
@@ -21,9 +21,9 @@ class BlogPost
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
-    private $title;
+    private $content;
 
     /**
      * @ORM\Column(type="datetime")
@@ -31,48 +31,14 @@ class BlogPost
     private $published;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $content;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $slug;
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getPublished(): ?\DateTimeInterface
-    {
-        return $this->published;
-    }
-
-    public function setPublished(\DateTimeInterface $published): self
-    {
-        $this->published = $published;
-
-        return $this;
     }
 
     public function getContent(): ?string
@@ -87,14 +53,14 @@ class BlogPost
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getPublished(): ?\DateTimeInterface
     {
-        return $this->slug;
+        return $this->published;
     }
 
-    public function setSlug(string $slug): self
+    public function setPublished(\DateTimeInterface $published): self
     {
-        $this->slug = $slug;
+        $this->published = $published;
 
         return $this;
     }
