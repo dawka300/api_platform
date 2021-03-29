@@ -5,3 +5,5 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+    enable_swagger_ui: false
+    enable_re_doc: false
