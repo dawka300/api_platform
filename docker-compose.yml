@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres:14-alpine3.14
+    environment:
+      POSTGRES_DB: api
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  php:
+    image: www.dawid.pl/php:latest
+    build:
+      context: .
+      target: php
+      cache_from:
+        - www.dawid.pl/php:latest
+    volumes:
+      - ./:/api-platform
+    depends_on:
+      - db
+  app:
+    image: www.dawid.pl/app:latest
+    build:
+      context: .
+      target: app
+      cache_from:
+        - www.dawid.pl/app:latest
+    volumes:
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./:/api-platform
+    ports:
+      - "8080:80"
+      - "8443:443"
+    depends_on:
+      - php
+
+
+volumes:
+  db-data: {}
